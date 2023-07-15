@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,14 +27,31 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/dashboard', [DashboardController::class, 'getDashboard'])->name('dashboard');
+});
+
+Route::middleware('admin')->group(function () {
+    Route::get('admin', [AdminController::class, 'getAdminDashboard'])
+        ->name('getAdminDashboard');
+    Route::get('/admin/manage-users', [AdminController::class, 'getUsers'])
+        ->name('getUsers');
+    Route::get('/admin/manage-robots', [AdminController::class, 'getRobots'])
+        ->name('getRobots');
+
+    Route::post('/admin/add-user', [AdminController::class, 'addUser'])
+        ->name('addUser');
+    Route::post('/admin/delete-user', [AdminController::class, 'deleteUser'])
+        ->name('deleteUser');
+
+    Route::post('/admin/add-robot', [AdminController::class, 'addRobot'])
+        ->name('addRobot');
+    Route::post('/admin/delete-robot', [AdminController::class, 'deleteRobot'])
+        ->name('deleteRobot');
 });
 
 require __DIR__.'/auth.php';
