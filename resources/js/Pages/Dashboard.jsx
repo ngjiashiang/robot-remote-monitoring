@@ -14,14 +14,14 @@ export default function Dashboard(props) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">             
                     {
                         props.robots.map((robot) => (
-                            <div className="w-full flex bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6">
-                                <div className="w-1/5 my-auto">
+                            <div className="w-full flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6">
+                                <div className="hidden md:block w-1/5 my-auto">
                                     {robot.id}
                                 </div>
                                 <div className="w-1/5 my-auto">
                                     {robot.name}
                                 </div>
-                                <div className="my-auto">
+                                <div className="w-3/5 my-auto">
                                     <div>
                                         Status: {robot.status}
                                     </div>

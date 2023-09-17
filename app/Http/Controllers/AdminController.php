@@ -88,7 +88,7 @@ class AdminController extends Controller
 
         Robot::create([
             'name' => $validatedData['name'],
-            'private_key' => bcrypt($generatedPrivateKey),
+            'private_key' => bcrypt($generatedPrivateKey), //change to unique
         ]);
 
         return redirect()->route("getRobots")->with([

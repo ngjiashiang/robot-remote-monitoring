@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RobotController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,21 +19,21 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', [DashboardController::class, 'getDashboard'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'getDashboard'])->name('dashboard');
 });
 
 Route::middleware('admin')->group(function () {
@@ -53,5 +54,11 @@ Route::middleware('admin')->group(function () {
     Route::post('/admin/delete-robot', [AdminController::class, 'deleteRobot'])
         ->name('deleteRobot');
 });
+
+Route::post('robot', [RobotController::class, 'updateStatus'])
+    ->name('updateRobotStatus');
+
+Route::get('robot-demo', [RobotController::class, 'getUpdateForm'])
+    ->name('getRobotUpdateForm');
 
 require __DIR__.'/auth.php';

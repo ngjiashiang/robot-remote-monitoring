@@ -26,6 +26,12 @@ export default function Dashboard(props) {
                             <BsFillArrowRightCircleFill size={20} className='my-auto'/>
                         </div>
                     </Link>
+                    <Link href="" className="block mt-6 hover:bg-gray-200 bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-blue-700 text-gray-900">
+                        <div className="flex justify-between p-6">
+                            <div>Documentation</div>
+                            <BsFillArrowRightCircleFill size={20} className='my-auto'/>
+                        </div>
+                    </Link>
                 </div>
             </div>
         </AuthenticatedLayout>
