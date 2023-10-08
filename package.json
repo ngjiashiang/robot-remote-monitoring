@@ -23,6 +23,8 @@
         "@emotion/styled": "^11.11.0",
         "@headlessui/react": "^1.7.15",
         "@mui/material": "^5.14.0",
+        "laravel-echo": "^1.15.3",
+        "pusher-js": "^8.3.0",
         "react-icons": "^4.10.1"
     }
 }

@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard(props) {
+    console.log(props.robots)
     return (
         <AuthenticatedLayout
             auth={props.auth}
@@ -22,9 +23,6 @@ export default function Dashboard(props) {
                                     {robot.name}
                                 </div>
                                 <div className="w-3/5 my-auto">
-                                    <div>
-                                        Status: {robot.status}
-                                    </div>
                                     <div>
                                         Battery level: {robot.battery_level}
                                     </div>

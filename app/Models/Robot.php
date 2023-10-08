@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Robot extends Model
 {
@@ -16,9 +17,6 @@ class Robot extends Model
      */
     protected $fillable = [
         'name',
-        'status',
-        'battery_level',
-        'scheduled_maintainance_at',
         'private_key',
     ];
 
@@ -31,12 +29,8 @@ class Robot extends Model
         'scheduled_maintainance_at' => 'datetime'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'private_key'
-    ];
+    public function statuses(): HasMany
+    {
+        return $this->hasMany(RobotStatus::class);
+    }
 }

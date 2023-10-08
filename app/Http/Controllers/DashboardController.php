@@ -11,8 +11,8 @@ class DashboardController extends Controller
 {
     public function getDashboard(): Response
     {
-        $robots = Robot::all();
-        
+        $robots = Robot::with('statuses')->get();
+        // dd($robots);
         return Inertia::render('Dashboard', [
             'robots' => $robots,
         ]);

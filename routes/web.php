@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RobotController;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -55,10 +56,10 @@ Route::middleware('admin')->group(function () {
         ->name('deleteRobot');
 });
 
-Route::post('robot', [RobotController::class, 'updateStatus'])
-    ->name('updateRobotStatus');
-
 Route::get('robot-demo', [RobotController::class, 'getUpdateForm'])
     ->name('getRobotUpdateForm');
 
+Route::get('/aaaa', [Controller::class, 'test']);
+
+Route::get('/a', [Controller::class, 'show']);
 require __DIR__.'/auth.php';
