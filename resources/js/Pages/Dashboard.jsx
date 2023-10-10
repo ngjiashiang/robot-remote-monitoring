@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import RobotStatus from '@/Components/RobotStatus'
 
 export default function Dashboard(props) {
     console.log(props.robots)
@@ -12,7 +13,7 @@ export default function Dashboard(props) {
             <Head title="Robot Dashboard" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">             
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">           
                     {
                         props.robots.map((robot) => (
                             <div className="w-full flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6">
@@ -23,18 +24,7 @@ export default function Dashboard(props) {
                                     {robot.name}
                                 </div>
                                 <div className="w-3/5 my-auto">
-                                    <div>
-                                        Battery level: {robot.battery_level}
-                                    </div>
-                                    <div>
-                                        Scheduled maintainance at: {robot.scheduled_maintainance_at}
-                                    </div>
-                                    <div>
-                                        Error code: {robot.error_code}
-                                    </div>
-                                    <div>
-                                        Updated at: {robot.updated_at}
-                                    </div>
+                                    <RobotStatus showNullStatuses robotStatus={robot.latest_status} />
                                 </div>
                             </div>
                         ))

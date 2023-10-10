@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Robot extends Model
 {
@@ -32,5 +33,10 @@ class Robot extends Model
     public function statuses(): HasMany
     {
         return $this->hasMany(RobotStatus::class);
+    }
+
+    public function latestStatus(): HasOne
+    {
+        return $this->hasOne(RobotStatus::class)->latestOfMany();
     }
 }
