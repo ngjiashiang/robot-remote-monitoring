@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function getDashboard(): Response
     {
-        $robots = Robot::with('latestStatus')->get();
+        $robots = Robot::with('latestStatus')->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Dashboard', [
             'robots' => $robots,
