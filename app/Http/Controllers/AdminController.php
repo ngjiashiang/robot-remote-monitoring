@@ -70,7 +70,7 @@ class AdminController extends Controller
 
     public function getRobots(): Response
     {
-        $robots = Robot::all();
+        $robots = Robot::orderBy('created_at', 'desc')->get();
         
         return Inertia::render('Admin/ManageRobots', [
             'robots' => $robots,
