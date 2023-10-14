@@ -1,34 +1,39 @@
 import { Link, Head } from '@inertiajs/react';
-import Echo from 'laravel-echo';
-import Pusher from "pusher-js"
+// import Echo from 'laravel-echo';
+// import Pusher from "pusher-js"
 import {useEffect} from "react";
+import { usePrivateChannel } from '@/Hooks/useWebSockets'
 
 export default function Welcome(props) {
-    window.Pusher = Pusher;
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: "some-key",
-        wsHost: import.meta.env.VITE_PUSHER_HOST,
-        wsPort: import.meta.env.VITE_PUSHER_PORT,
-        wssPort: import.meta.env.VITE_PUSHER_PORT,
-        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-        forceTLS: false,
-        encrypted: true,
-        disableStats: true,
-        enabledTransports: ['ws', 'wss'],
-    });
+    var a = usePrivateChannel('test_private', 'TestPublicPrivate')
     useEffect(() => {
-        window.Echo.channel('test_public')
-            .listen('TestPublicPrivate', (e) => {
-                console.log("public fired")
-                console.log(e);
-            });
-        window.Echo.private('test_private')
-            .listen('TestPublicPrivate', (e) => {
-                console.log("private fired")
-                console.log(e);
-            });
-    }, []);
+        console.log(a)
+    }, [a]);
+    // window.Pusher = Pusher;
+    // window.Echo = new Echo({
+    //     broadcaster: 'pusher',
+    //     key: "some-key",
+    //     wsHost: import.meta.env.VITE_PUSHER_HOST,
+    //     wsPort: import.meta.env.VITE_PUSHER_PORT,
+    //     wssPort: import.meta.env.VITE_PUSHER_PORT,
+    //     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    //     forceTLS: false,
+    //     encrypted: true,
+    //     disableStats: true,
+    //     enabledTransports: ['ws', 'wss'],
+    // });
+    // useEffect(() => {
+    //     window.Echo.channel('test_public')
+    //         .listen('TestPublicPrivate', (e) => {
+    //             console.log("public fired")
+    //             console.log(e);
+    //         });
+    //     window.Echo.private('test_private')
+    //         .listen('TestPublicPrivate', (e) => {
+    //             console.log("private fired")
+    //             console.log(e);
+    //         });
+    // }, []);
 
     return (
         <>
