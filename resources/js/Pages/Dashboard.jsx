@@ -6,37 +6,49 @@ import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets'
 
 export default function Dashboard(props) {
     const [robotStatuses, setRobotStatuses] = useState(props.robots);
+    const [modifiedRow, setModifiedRow] = useState(null);
+
     try {
-        var a = usePrivateChannel('test_private', 'TestPublicPrivate')
+        var robotUpdates = usePrivateChannel('robots-status', 'RobotStatusUpdated')
         var wsConnection = isConnected();
     } catch (error) {
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
         console.error(error)
     }
     
     useEffect(() => {
-        console.log(a)
-    }, [a]);
+        if(robotUpdates) {
+            console.log('websockets fireed')
+            console.log(robotUpdates)
+            updateRobotStatus(robotUpdates.robot_data);
+        }
+    }, [robotUpdates]);
 
     useEffect(() => {
         if(!wsConnection) {
-            console.log(wsConnection)
-            // http polling, make a hook
+            
         }
         console.log(robotStatuses)
     }, [wsConnection]);
 
     const updateRobotStatus = (newStatus) => {
-        const robotDataToBeUpdated = [...robotStatuses];
-        const index = robotDataToBeUpdated.findIndex(data => data.robot.id === newStatus.robot_id);
-
-        if (index !== -1) {
-          robotDataToBeUpdated[index] = newStatus;
-        } else {
-          robotDataToBeUpdated.push({ newStatus });
-        }
-
-        setRobotStatuses(robotDataToBeUpdated);
+        setRobotStatuses((robotStatuses) => {
+            const robotDataToBeUpdated = [...robotStatuses];
+            const index = robotDataToBeUpdated.findIndex(data => data.id === newStatus.latest_status.robot_id);
+            console.log(index)
+            if (index !== -1) {
+                console.log('bbbbbbbbbbbbb')
+                robotDataToBeUpdated[index] = newStatus;
+                setModifiedRow(index);
+            } else if (newStatus.latest_status.robot_id) {
+                console.log('aaaaaaaaaaaaaaa')
+                robotDataToBeUpdated.unshift(newStatus);
+                setModifiedRow(0);
+            }
+            return robotDataToBeUpdated;
+        });
+        setTimeout(() => {
+            setModifiedRow(null);
+        }, 2000);
     };
 
     return (
@@ -50,8 +62,8 @@ export default function Dashboard(props) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">           
                     {
-                        robotStatuses.map((robot) => (
-                            <div className="w-full flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6">
+                        robotStatuses.map((robot, index) => (
+                            <div key={robot.id} className={`w-full flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6 transition-colors duration-[2000ms] ease-in-out ${modifiedRow === index ? 'bg-green-500' : ''}`}>
                                 <div className="hidden md:block w-1/5 my-auto">
                                     {robot.id}
                                 </div>
@@ -59,7 +71,6 @@ export default function Dashboard(props) {
                                     {robot.name}
                                 </div>
                                 <div className="w-3/5 my-auto">
-                                    {/* {robot} */}
                                     <RobotStatus showNullStatuses robotStatus={robot.latest_status} />
                                 </div>
                             </div>

@@ -17,8 +17,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('test_private', function ($user) {
+Broadcast::channel('robots-status', function ($user) {
     return !is_null($user);
 });
 
+Broadcast::channel('robot-.{robotId}.-status', function ($user) {
+    return !is_null($user);
+});
 // Broadcast::channel('test_public', "aaaa");

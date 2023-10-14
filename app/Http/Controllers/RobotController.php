@@ -7,6 +7,7 @@ use App\Models\RobotStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use App\Events\RobotStatusUpdated;
 
 // $table->foreign('robot_id')->references('id')->on('robots')->onDelete('cascade');
 // $table->integer('battery_level')->nullable();
@@ -26,7 +27,7 @@ class RobotController extends Controller
             'data' => 'sometimes|nullable|string',
         ]);
 
-        $robot = Robot::where('id', $validatedData['id'])->first();
+        $robot = Robot::where('id', $validatedData['id'])->with('latestStatus')->first();
         
         if (!$robot || !Hash::check($validatedData['private_key'], $robot->private_key)) {
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -39,6 +40,8 @@ class RobotController extends Controller
         $robotStatus->error_code = $validatedData['error_code'] ?? null;
         $robotStatus->data = $validatedData['data'] ?? null;
         $robotStatus->save();
+
+        event(new RobotStatusUpdated($robot));
 
         return response()->json(['message' => 'Robot status saved'], 201);
     }
