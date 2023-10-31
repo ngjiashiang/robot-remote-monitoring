@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/', [DashboardController::class, 'getDashboard'])->name('dashboard');
+
+    Route::get('/jpi/robots', [RobotController::class, 'getAllRobotsStatus']);
+    Route::get('/jpi/robot/{id}', [RobotController::class, 'getRobotStatus']);
 });
 
 Route::middleware('admin')->group(function () {
@@ -62,4 +65,5 @@ Route::get('robot-demo', [RobotController::class, 'getUpdateForm'])
 Route::get('/aaaa', [Controller::class, 'test']);
 
 Route::get('/a', [Controller::class, 'show']);
+
 require __DIR__.'/auth.php';

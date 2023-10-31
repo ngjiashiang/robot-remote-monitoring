@@ -16,7 +16,7 @@ const useWebSockets = () => {
         disableStats: true,
         enabledTransports: ["ws", "wss"],
     });
-}
+};
 
 export const usePublicChannel = (channelName, eventName) => {
     const [publicChannelData, setPublicChannelData] = useState();
@@ -62,4 +62,4 @@ export const isConnected = () => {
     });
 
     return isConnected;
-}
+};

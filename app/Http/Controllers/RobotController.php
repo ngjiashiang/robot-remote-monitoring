@@ -6,8 +6,9 @@ use App\Models\Robot;
 use App\Models\RobotStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
+use Illuminate\Http\JsonResponse;
 use App\Events\RobotStatusUpdated;
+use PhpParser\Node\Stmt\TryCatch;
 
 // $table->foreign('robot_id')->references('id')->on('robots')->onDelete('cascade');
 // $table->integer('battery_level')->nullable();
@@ -16,7 +17,7 @@ use App\Events\RobotStatusUpdated;
 // $table->string('data')->nullable();
 class RobotController extends Controller
 {
-    public function updateStatus(Request $request)
+    public function updateStatus(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
             'id' => 'required|exists:robots,id',
@@ -41,13 +42,23 @@ class RobotController extends Controller
         $robotStatus->data = $validatedData['data'] ?? null;
         $robotStatus->save();
 
-        event(new RobotStatusUpdated($robot));
-
+        try {
+            event(new RobotStatusUpdated($robot));
+        } catch (\Throwable $th) {
+        }
+        
         return response()->json(['message' => 'Robot status saved'], 201);
     }
 
-    public function getUpdateForm()
+    public function getAllRobotsStatus(): JsonResponse
     {
-        return Inertia::render('RobotForm');
-    } 
+        $data = RobotStatus::paginate(15);    
+        return response()->json($data, 200);
+    }
+
+    public function getRobotStatus($id): JsonResponse
+    {
+
+        return response()->json(['message' => 'Robot status saved'], 201);
+    }
 }

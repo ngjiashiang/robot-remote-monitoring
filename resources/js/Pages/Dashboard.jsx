@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react';
 import RobotStatus from '@/Components/RobotStatus'
 import { useState, useEffect } from 'react';
 import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets'
+import { router } from '@inertiajs/react'
 
 export default function Dashboard(props) {
     const [robotStatuses, setRobotStatuses] = useState(props.robots);
@@ -23,11 +24,18 @@ export default function Dashboard(props) {
         }
     }, [robotUpdates]);
 
+    setTimeout(() => {
+        if(! wsConnection) {
+            // router.reload({ only: ['robots'], hideProgress: true })
+            // setRobotStatuses(props.robots)
+        }
+    }, 10000);
+
     useEffect(() => {
         if(!wsConnection) {
-            
+            console.log('no ws connection')
         }
-        console.log(robotStatuses)
+        console.log('got ws connection')
     }, [wsConnection]);
 
     const updateRobotStatus = (newStatus) => {

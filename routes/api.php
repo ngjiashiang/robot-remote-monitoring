@@ -19,5 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/robot', [RobotController::class, 'updateStatus'])
-    ->name('updateRobotStatus');
+Route::post('/robot', [RobotController::class, 'updateStatus']);
