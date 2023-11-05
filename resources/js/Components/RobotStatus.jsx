@@ -6,15 +6,10 @@ export default function RobotStatus({
     return (
         <>
             {
-                robotStatus == null
-                ?
-                    <div className="text-red-500">Robot has not updated any status yet.</div>
-                :
-                // if robot status is not null, map the robotStatus object with
-                Object.entries(robotStatus).map(([key, value]) => {
+                Object.entries(robotStatus).map(([key, value], index) => {
                     if (!statusToHide.includes(key) && (showNullStatuses || value != null)) {
                         return (
-                            <div key={key}>
+                            <div key={robotStatus.robot_id + "-" + key}>
                                 <strong>{key}:</strong> {value}
                             </div>
                         );

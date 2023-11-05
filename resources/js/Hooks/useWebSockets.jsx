@@ -4,18 +4,20 @@ import Pusher from "pusher-js"
 
 const useWebSockets = () => {
     window.Pusher = Pusher;
-    window.Echo = new Echo({
-        broadcaster: "pusher",
-        key: import.meta.env.VITE_PUSHER_APP_KEY,
-        wsHost: import.meta.env.VITE_PUSHER_HOST,
-        wsPort: import.meta.env.VITE_PUSHER_PORT,
-        wssPort: import.meta.env.VITE_PUSHER_PORT,
-        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-        forceTLS: false,
-        encrypted: true,
-        disableStats: true,
-        enabledTransports: ["ws", "wss"],
-    });
+    if(!window.Echo){
+        window.Echo = new Echo({
+            broadcaster: "pusher",
+            key: import.meta.env.VITE_PUSHER_APP_KEY,
+            wsHost: import.meta.env.VITE_PUSHER_HOST,
+            wsPort: import.meta.env.VITE_PUSHER_PORT,
+            wssPort: import.meta.env.VITE_PUSHER_PORT,
+            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+            forceTLS: false,
+            encrypted: true,
+            disableStats: true,
+            enabledTransports: ["ws", "wss"],
+        });
+    }
 };
 
 export const usePublicChannel = (channelName, eventName) => {
@@ -25,6 +27,9 @@ export const usePublicChannel = (channelName, eventName) => {
         window.Echo.channel(channelName).listen(eventName, (e) => {
             setPublicChannelData(e);
         });
+        return () => {
+            window.Echo.leave(`${channelName}`);
+        }
     }, []);
 
     return publicChannelData;
@@ -37,13 +42,21 @@ export const usePrivateChannel = (channelName, eventName) => {
         window.Echo.private(channelName).listen(eventName, (e) => {
             setPrivateChannelData(e);
         });
+
+        return () => {
+            window.Echo.leave(`private-${channelName}`);
+        }
     }, []);
 
     return privateChannelData;
 };
 
 export const isConnected = () => {
-    const [isConnected, setIsConnected] = useState(true);
+    const [isConnected, setIsConnected] = useState(false);
+
+    window.Echo.connector.pusher.connection.bind('connected', () => {
+        setIsConnected(true);
+    });
 
     window.Echo.connector.pusher.connection.bind('disconnected', () => {
         setIsConnected(false);
