@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets'
 import Pagination from '@/Components/Pagination'
 import { router } from '@inertiajs/react'
+import Alert from '@mui/material/Alert';
 
 export default function Dashboard(props) {
     console.log(props.robots.data);
@@ -77,6 +78,11 @@ export default function Dashboard(props) {
                             <button className='border border-black bg-white rounded-lg p-2 hover:bg-blue-300 focus:bg-blue-300'>🔍</button>
                         </div>
                     </div>
+                    {!wsConnection &&
+                        <div className="mb-4">
+                            <Alert severity="warning">Websockets connection & realtime updates are unavailable, please contact admin. Page is reloading on a 10 second interval.</Alert>
+                        </div>
+                    }
                     {
                         robotStatuses.map((robot, index) => (
                             <div key={robot.id} className={`w-full flex justify-between overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6 transition-colors duration-[2000ms] ease-in-out ${modifiedRow === index ? 'bg-green-500' : 'bg-white'}`}>
