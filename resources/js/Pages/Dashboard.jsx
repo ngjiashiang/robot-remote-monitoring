@@ -83,6 +83,17 @@ export default function Dashboard(props) {
                             <Alert severity="warning">Websockets connection & realtime updates are unavailable, please contact admin. Page is reloading on a 10 second interval.</Alert>
                         </div>
                     }
+                    <div className="bg-black text-white w-full flex justify-between overflow-hidden shadow-sm sm:rounded-t-lg mb-4 px-6 py-2">
+                        <div className="hidden md:block w-1/5 my-auto">
+                            ID
+                        </div>
+                        <div className="w-1/5 my-auto">
+                            NAME
+                        </div>
+                        <div className="w-3/5 my-auto">
+                            STATUSES
+                        </div>
+                    </div>
                     {
                         robotStatuses.map((robot, index) => (
                             <div key={robot.id} className={`w-full flex justify-between overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6 transition-colors duration-[2000ms] ease-in-out ${modifiedRow === index ? 'bg-green-500' : 'bg-white'}`}>

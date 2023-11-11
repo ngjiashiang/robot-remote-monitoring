@@ -29,12 +29,11 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'name' => 'required|max:255',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
+        $request->user()->name = $request->name;
         $request->user()->save();
 
         return Redirect::route('profile.edit');
@@ -50,6 +49,10 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        if ($user->role == 'admin') {
+            return redirect()->back()->with('error', 'Admin users cannot delete their accounts.');
+        }
 
         Auth::logout();
 

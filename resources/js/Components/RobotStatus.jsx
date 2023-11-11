@@ -3,6 +3,14 @@ export default function RobotStatus({
     showNullStatuses = false,
     statusToHide = ['id', 'robot_id', 'created_at']
 }) {
+    const robotStatusTranslation = {
+        "battery_level": "Battery level",
+        "current_task": "Current task",
+        "error_code": "Error code",
+        "data": "Data",
+        "updated_at": "Updated at"
+    }
+
     return (
         <>
             {
@@ -10,7 +18,7 @@ export default function RobotStatus({
                     if (!statusToHide.includes(key) && (showNullStatuses || value != null)) {
                         return (
                             <div key={robotStatus.robot_id + "-" + key}>
-                                <strong>{key}:</strong> {value}
+                                <strong>{robotStatusTranslation[key]}:</strong> {key == "updated_at" ? new Date(value).toString() : value}
                             </div>
                         );
                     }
