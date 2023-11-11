@@ -11,6 +11,7 @@ export default function Dashboard(props) {
     console.log(props.robots.data);
     const [robotStatuses, setRobotStatuses] = useState(props.robots.data);
     const [modifiedRow, setModifiedRow] = useState(null);
+    const [queriedRobotName, setQueriedRobotName] = useState(props.queried_name)
 
     try {
         var robotUpdates = usePrivateChannel('robots-status', 'RobotStatusUpdated');
@@ -62,6 +63,10 @@ export default function Dashboard(props) {
         }, 2000);
     };
 
+    function handleChange(e) {
+        setQueriedRobotName(e.target.value);
+    }
+
     return (
         <AuthenticatedLayout
             auth={props.auth}
@@ -73,10 +78,10 @@ export default function Dashboard(props) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="w-full flex justify-end mb-4">
-                        <div className="flex space-x-2">
-                            <input type="text" placeholder="Search by robot name" className="rounded-lg"/>
+                        <form action={route('dashboard')} method="GET" className="flex space-x-2">
+                            <input name="name" value={queriedRobotName} onChange={handleChange} type="text" placeholder="Search by robot name" className="rounded-lg"/>
                             <button className='border border-black bg-white rounded-lg p-2 hover:bg-blue-300 focus:bg-blue-300'>🔍</button>
-                        </div>
+                        </form>
                     </div>
                     {!wsConnection &&
                         <div className="mb-4">

@@ -9,12 +9,21 @@ use App\Models\Robot;
 
 class DashboardController extends Controller
 {
-    public function getDashboard(): Response
+    public function getDashboard(Request $request): Response
     {
-        $robots = Robot::with('latestStatus')->orderBy('created_at', 'desc')->paginate(15);
+        $robots = Robot::with('latestStatus')->orderBy('created_at', 'desc');
         
+        $nameFilter = $request->has('name') ? $request->name : "";
+
+        if ($request->has('name')) {
+            $robots->where('name', 'like', '%' . $nameFilter . '%');
+        }
+
+        $robots = $robots->paginate(10)->withQueryString();
+
         return Inertia::render('Dashboard', [
             'robots' => $robots,
+            'queried_name' => $nameFilter
         ]);
     }
 }

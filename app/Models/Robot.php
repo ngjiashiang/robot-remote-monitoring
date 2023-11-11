@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 
 class Robot extends Model
 {
@@ -39,4 +40,9 @@ class Robot extends Model
     {
         return $this->hasOne(RobotStatus::class)->latestOfMany();
     }
+
+    // public function scopeSearchByName(Builder $query, string $name)
+    // {
+    //     return $query->where('name', 'like', '%' . $name . '%');
+    // }
 }
