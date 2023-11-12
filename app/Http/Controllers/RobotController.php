@@ -26,7 +26,7 @@ class RobotController extends Controller
                 'battery_level' => 'sometimes|nullable|numeric',
                 'current_task' => 'sometimes|nullable|string',
                 'error_code' => 'sometimes|nullable|string',
-                'data' => 'sometimes|nullable|string',
+                'data' => 'sometimes|nullable|json|string',
             ]);
     
             $robot = Robot::where('id', $validatedData['id'])->with('latestStatus')->first();
