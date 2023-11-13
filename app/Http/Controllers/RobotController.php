@@ -9,12 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use App\Events\RobotStatusUpdated;
 use Illuminate\Validation\ValidationException;
+use Inertia\Response;
+use Inertia\Inertia;
 
-// $table->foreign('robot_id')->references('id')->on('robots')->onDelete('cascade');
-// $table->integer('battery_level')->nullable();
-// $table->string('current_task')->nullable();
-// $table->string('error_code')->nullable();
-// $table->string('data')->nullable();
 class RobotController extends Controller
 {
     public function updateStatus(Request $request): JsonResponse
@@ -43,8 +40,12 @@ class RobotController extends Controller
             $robotStatus->data = $validatedData['data'] ?? null;
             $robotStatus->save();
     
-            event(new RobotStatusUpdated($robot));
-
+            // Try broadcasting the event
+            try {
+                event(new RobotStatusUpdated($robot));
+            } catch (\Exception $eventException) {
+                return response()->json(['message' => 'Robot status saved, but websockets broadcasting failed.'], 201);
+            }
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->validator->errors()], 422);
         } catch (\Exception $e) {
@@ -53,6 +54,21 @@ class RobotController extends Controller
         }
 
         return response()->json(['message' => 'Robot status saved'], 201);
+    }
+
+    public function getRobot($id): Response
+    {
+        $robot = Robot::find($id);
+        if (! $robot) {
+            abort(404);
+        }
+
+        $statuses = $robot->statuses()->orderBy('created_at', 'desc')->paginate(10);
+
+        return Inertia::render('Robot', [
+            'robot' => $robot,
+            'statuses' => $statuses
+        ]);
     }
 
     // public function getAllRobotsStatus(): JsonResponse

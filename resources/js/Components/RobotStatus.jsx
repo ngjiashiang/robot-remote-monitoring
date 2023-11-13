@@ -1,3 +1,5 @@
+import RobotDataFieldParser from "@/Components/RobotDataFieldParser";
+
 export default function RobotStatus({ 
     robotStatus,
     showNullStatuses = false,
@@ -11,41 +13,13 @@ export default function RobotStatus({
         "updated_at": "Updated at"
     }
 
-    function isJSONString(str) {
-        try {
-            let json = JSON.parse(str);
-            if (typeof json === 'object' && json !== null) {
-                return {
-                    data: json,
-                    valid_json: true
-                };
-            } else {
-                throw "not a json string"
-            }
-        } catch (error) {
-            console.log("not json string")
-            return {
-                data: str,
-                valid_json: false
-            };
-        }
-    }
-
     return (
         <>
             {
                 Object.entries(robotStatus).map(([key, value], index) => {
                     if(!statusToHide.includes(key) && (showNullStatuses || value != null)) {
                         if(key == "data" && value != null) {
-                            let temp = isJSONString(value)
-                            return temp.valid_json ? Object.entries(temp.data).map(([dataKey, dataValue], dataIndex) => {
-                                return <div key={robotStatus.robot_id + "-" + key + "-" + dataKey + "-" + dataIndex}>
-                                    <strong>{dataKey}:</strong>  {dataValue}
-                                </div>
-                            }) :
-                            <div key={robotStatus.robot_id + "-" + key}>
-                                <strong>Data:</strong> {value}
-                            </div>
+                            return <RobotDataFieldParser  key={robotStatus.robot_id + "-" + key} showDataKey={true} data={value}/>
                         }
                         return (
                             <div key={robotStatus.robot_id + "-" + key}>

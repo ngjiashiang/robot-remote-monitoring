@@ -2,10 +2,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import RobotStatus from '@/Components/RobotStatus'
 import { useState, useEffect } from 'react';
-import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets'
-import Pagination from '@/Components/Pagination'
-import { router } from '@inertiajs/react'
-import Alert from '@mui/material/Alert';
+import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets';
+import Pagination from '@/Components/Pagination';
+import { router } from '@inertiajs/react';
+import WebSocketsUnavailableAlert from '@/Components/WebSocketsUnavailableAlert';
 
 export default function Dashboard(props) {
     console.log(props.robots.data);
@@ -32,7 +32,7 @@ export default function Dashboard(props) {
         const intervalId = setInterval(() => {
             if (!wsConnection) {
                 console.log('No ws connection');
-                router.visit(window.location);
+                router.visit(window.location, { preserveScroll: true });
                 // setRobotStatuses(props.robots.data);
                 console.log('Polling');
             } else {
@@ -84,9 +84,7 @@ export default function Dashboard(props) {
                         </form>
                     </div>
                     {!wsConnection &&
-                        <div className="mb-4">
-                            <Alert severity="warning">Websockets connection & realtime updates are unavailable, please contact admin. Page is reloading on a 10 second interval.</Alert>
-                        </div>
+                        <WebSocketsUnavailableAlert />
                     }
                     <div className="bg-black text-white w-full flex justify-between overflow-hidden shadow-sm sm:rounded-t-lg mb-4 px-6 py-2">
                         <div className="hidden md:block w-1/5 my-auto">
@@ -101,7 +99,7 @@ export default function Dashboard(props) {
                     </div>
                     {
                         robotStatuses.map((robot, index) => (
-                            <div key={robot.id} className={`w-full flex justify-between overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6 transition-colors duration-[2000ms] ease-in-out ${modifiedRow === index ? 'bg-green-500' : 'bg-white'}`}>
+                            <a href={"/robot/" + robot.id} key={robot.id} className={`w-full flex justify-between overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6 hover:bg-black hover:text-white ${modifiedRow === index ? 'transition-colors duration-[2000ms] ease-in-out bg-green-500' : 'bg-white'}`}>
                                 <div className="hidden md:block w-1/5 my-auto">
                                     {robot.id}
                                 </div>
@@ -117,7 +115,7 @@ export default function Dashboard(props) {
                                     }
                                     
                                 </div>
-                            </div>
+                            </a>
                         ))
                     }
                     <Pagination pages={props.robots.links}/>

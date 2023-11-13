@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/', [DashboardController::class, 'getDashboard'])->name('dashboard');
+    Route::get('/robot/{id}', [RobotController::class, 'getRobot'])->name('getRobot');
 
     Route::get('/jpi/robots', [RobotController::class, 'getAllRobotsStatus']);
     Route::get('/jpi/robot/{id}', [RobotController::class, 'getRobotStatus']);

@@ -21,7 +21,7 @@ Broadcast::channel('robots-status', function ($user) {
     return !is_null($user);
 });
 
-Broadcast::channel('robot-.{robotId}.-status', function ($user) {
+Broadcast::channel('robot-{robotId}-status', function ($user, $robotId) {
     return !is_null($user);
 });
 // Broadcast::channel('test_public', "aaaa");

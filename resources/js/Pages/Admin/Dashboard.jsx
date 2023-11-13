@@ -14,19 +14,19 @@ export default function Dashboard(props) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Link href="/admin/manage-users" className="block mt-6 hover:bg-gray-200 bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-blue-700 text-gray-900">
+                    <Link href="/admin/manage-users" className="block mt-6 hover:bg-black bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-white text-gray-900">
                         <div className="flex justify-between p-6">
                             <div>Manage Users</div>
                             <BsFillArrowRightCircleFill size={20} className='my-auto'/>
                         </div>
                     </Link>
-                    <Link href="/admin/manage-robots" className="block mt-6 hover:bg-gray-200 bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-blue-700 text-gray-900">
+                    <Link href="/admin/manage-robots" className="block mt-6 hover:bg-black bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-white text-gray-900">
                         <div className="flex justify-between p-6">
                             <div>Manage Robots</div>
                             <BsFillArrowRightCircleFill size={20} className='my-auto'/>
                         </div>
                     </Link>
-                    <Link href="" className="block mt-6 hover:bg-gray-200 bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-blue-700 text-gray-900">
+                    <Link href="" className="block mt-6 hover:bg-black bg-white overflow-hidden shadow-sm sm:rounded-lg hover:text-white text-gray-900">
                         <div className="flex justify-between p-6">
                             <div>Documentation</div>
                             <BsFillArrowRightCircleFill size={20} className='my-auto'/>
