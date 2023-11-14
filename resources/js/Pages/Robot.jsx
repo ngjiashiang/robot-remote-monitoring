@@ -24,7 +24,8 @@ export default function Robot(props) {
             if(robotUpdates) {
                 console.log('websockets fireed');
                 console.log(robotUpdates);
-                if(updates.length > 2) {
+                // prevent memory leak
+                if(updates.length > 50) {
                     window.location.replace(window.location)
                 }
                 updateRobotStatus(robotUpdates.robot_data.latest_status);
