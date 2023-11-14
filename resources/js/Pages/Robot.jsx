@@ -4,10 +4,13 @@ import Pagination from '@/Components/Pagination';
 import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets';
 import { useState, useEffect } from 'react';
 import WebSocketsUnavailableAlert from '@/Components/WebSocketsUnavailableAlert';
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function Robot(props) {
+    console.log(props.statuses.data);
     const [updates, setUpdates] = useState([]);
     const [modified, setModified] = useState(false);
+    const [statuses, setStatuses] = useState(props.statuses.data);
 
     if(props.statuses.current_page == 1) {
         try {
@@ -21,9 +24,11 @@ export default function Robot(props) {
             if(robotUpdates) {
                 console.log('websockets fireed');
                 console.log(robotUpdates);
+                if(updates.length > 2) {
+                    window.location.replace(window.location)
+                }
                 updateRobotStatus(robotUpdates.robot_data.latest_status);
             }
-            console.log(updates)
         }, [robotUpdates]);
     
         useEffect(() => {
@@ -45,11 +50,26 @@ export default function Robot(props) {
     
         const updateRobotStatus = (newStatus) => {
             setUpdates((prevUpdates) => [newStatus, ...prevUpdates]);
+            setStatuses((prevStatuses) => [newStatus, ...prevStatuses])
             setModified(true)
             setTimeout(() => {
                 setModified(false);
             }, 2000);
         };
+    }
+
+    const CustomTooltip = ({ active, payload }) => {
+        if (!active) return null
+        return (
+            <div className='px-4 py-4 bg-white rounded-lg border-2 border-black'>
+                <div>
+                    { new Date(payload[0].payload.updated_at).toString() }
+                </div>
+                <div>
+                    Battery level: { payload[0].value }
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -61,7 +81,28 @@ export default function Robot(props) {
             <Head title={props.robot.name} />
             {props.statuses.data.length > 0 ?
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-                    {wsConnection === false && <WebSocketsUnavailableAlert />}
+                    <ResponsiveContainer width="100%" height={400}>
+                        <BarChart
+                            width={500}
+                            height={300}
+                            data={statuses}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis reversed dataKey="updated_at" tickFormatter={dateTime => new Date(dateTime).toString()}/>
+                            <YAxis />
+                            <Tooltip content={<CustomTooltip/>} />
+                            <Bar dataKey="battery_level" fill="#82ca9d" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                    <div className='mt-4'>
+                        {wsConnection === false && <WebSocketsUnavailableAlert />}
+                    </div>
                     <div className='w-full hidden lg:flex flex-col lg:flex-row'>
                         <div className='w-full mb-2 px-2 lg:w-1/5'></div>
                         <div className='w-full lg:w-4/5 bg-black text-white uppercase flex flex-row rounded-t-lg mb-4 p-2'>
