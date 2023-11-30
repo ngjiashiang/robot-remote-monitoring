@@ -48,11 +48,13 @@ export default function Dashboard(props) {
     const updateRobotStatus = (newStatus) => {
         setRobotStatuses((robotStatuses) => {
             const robotDataToBeUpdated = [...robotStatuses];
-            const index = robotDataToBeUpdated.findIndex(data => data.id === newStatus.latest_status.robot_id);
+            const index = robotDataToBeUpdated.findIndex(data => data.id === newStatus.robot_id);
             console.log(index)
+            console.log(robotDataToBeUpdated[index])
+            console.log(newStatus)
             if (index !== -1) {
                 console.log('bbbbbbbbbbbbb')
-                robotDataToBeUpdated[index] = newStatus;
+                robotDataToBeUpdated[index].latest_status = newStatus;
                 setModifiedRow(index);
             }
 

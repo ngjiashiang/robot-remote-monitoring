@@ -5,6 +5,7 @@ import { isConnected, usePrivateChannel } from '@/Hooks/useWebSockets';
 import { useState, useEffect } from 'react';
 import WebSocketsUnavailableAlert from '@/Components/WebSocketsUnavailableAlert';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import RobotDataFieldParser from '@/Components/RobotDataFieldParser';
 
 export default function Robot(props) {
     console.log(props.statuses.data);
@@ -28,7 +29,7 @@ export default function Robot(props) {
                 if(updates.length > 50) {
                     window.location.replace(window.location)
                 }
-                updateRobotStatus(robotUpdates.robot_data.latest_status);
+                updateRobotStatus(robotUpdates.robot_data);
             }
         }, [robotUpdates]);
     
@@ -60,10 +61,11 @@ export default function Robot(props) {
     }
 
     const CustomTooltip = ({ active, payload }) => {
-        if (!active) return null
+        if (payload.length <= 0) return null;
+        if (!active) return null;
         return (
-            <div className='px-4 py-4 bg-white rounded-lg border-2 border-black'>
-                <div>
+            <div className='p-2 lg:p-4 break-words w-48 lg:w-auto bg-white rounded-lg border-2 border-black'>
+                <div className='text-break'>
                     { new Date(payload[0].payload.updated_at).toString() }
                 </div>
                 <div>
@@ -82,6 +84,7 @@ export default function Robot(props) {
             <Head title={props.robot.name} />
             {props.statuses.data.length > 0 ?
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+                    <div>Battery Level:</div>
                     <ResponsiveContainer width="100%" height={400}>
                         <BarChart
                             width={500}
@@ -141,7 +144,7 @@ export default function Robot(props) {
                                         </div>
                                         <div className='lg:w-1/2 px-2'>
                                             <strong className='lg:hidden'>Data: </strong>
-                                            {update.data || "null"}
+                                            {update.data ? <RobotDataFieldParser data={update.data} /> : "null"}
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +171,7 @@ export default function Robot(props) {
                                         </div>
                                         <div className='lg:w-1/2 px-2'>
                                             <strong className='lg:hidden'>Data: </strong>
-                                            {status.data || "null"}
+                                            {status.data ? <RobotDataFieldParser data={status.data} /> : "null"}
                                         </div>
                                     </div>
                                 </div>

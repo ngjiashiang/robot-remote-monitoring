@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BenchmarkingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RobotController;
 use App\Http\Controllers\Controller;
@@ -58,6 +59,15 @@ Route::middleware('admin')->group(function () {
         ->name('addRobot');
     Route::post('/admin/delete-robot', [AdminController::class, 'deleteRobot'])
         ->name('deleteRobot');
+    
+    Route::get('/admin/benchmark-find-robot', [BenchmarkingController::class, 'benchmarkFindRobot'])
+        ->name('benchmarkFindRobot');
+    Route::get('/admin/benchmark-write-robot-status-to-db', [BenchmarkingController::class, 'benchmarkWriteRobotStatusToDb'])
+        ->name('benchmarkWriteRobotStatusToDb');
+    Route::get('/admin/benchmark-bcrypt', [BenchmarkingController::class, 'benchmarkBcrypt'])
+        ->name('benchmarkBcrypt');
+    Route::get('/admin/benchmark-websockets', [BenchmarkingController::class, 'benchmarkWebSockets'])
+        ->name('benchmarkWebSockets');
 });
 
 Route::get('robot-demo', [RobotController::class, 'getUpdateForm'])

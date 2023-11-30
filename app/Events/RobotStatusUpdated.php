@@ -33,7 +33,7 @@ class RobotStatusUpdated implements ShouldBroadcast
     {
         return [
             new PrivateChannel('robots-status'),
-            new PrivateChannel('robot-'.$this->robot_data->id.'-status')
+            new PrivateChannel('robot-'.$this->robot_data->robot_id.'-status')
         ];
     }
 }

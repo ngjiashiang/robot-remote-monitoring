@@ -10,6 +10,14 @@ class RobotStatus extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'robot_id',
+        'battery_level',
+        'current_task',
+        'error_code',
+        'data'
+    ];
+
     public function robot(): BelongsTo
     {
         return $this->belongsTo(Robot::class);

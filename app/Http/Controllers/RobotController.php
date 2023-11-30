@@ -26,7 +26,7 @@ class RobotController extends Controller
                 'data' => 'sometimes|nullable|json|string',
             ]);
     
-            $robot = Robot::where('id', $validatedData['id'])->with('latestStatus')->first();
+            $robot = Robot::find($validatedData['id']);
             
             if (!$robot || !Hash::check($validatedData['private_key'], $robot->private_key)) {
                 return response()->json(['message' => 'Unauthorized'], 401);
@@ -42,7 +42,7 @@ class RobotController extends Controller
     
             // Try broadcasting the event
             try {
-                event(new RobotStatusUpdated($robot));
+                event(new RobotStatusUpdated($robotStatus));
             } catch (\Exception $eventException) {
                 return response()->json(['message' => 'Robot status saved, but websockets broadcasting failed.'], 201);
             }
