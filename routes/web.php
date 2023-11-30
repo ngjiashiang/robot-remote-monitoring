@@ -21,25 +21,20 @@ use Inertia\Inertia;
 |
 */
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/', function () {
+    return Inertia::render('Welcome');
+})->name('welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/', [DashboardController::class, 'getDashboard'])->name('dashboard');
+    Route::get('/robot-dashboard', [DashboardController::class, 'getDashboard'])->name('dashboard');
     Route::get('/robot/{id}', [RobotController::class, 'getRobot'])->name('getRobot');
 
-    Route::get('/jpi/robots', [RobotController::class, 'getAllRobotsStatus']);
-    Route::get('/jpi/robot/{id}', [RobotController::class, 'getRobotStatus']);
+    // Route::get('/jpi/robots', [RobotController::class, 'getAllRobotsStatus']);
+    // Route::get('/jpi/robot/{id}', [RobotController::class, 'getRobotStatus']);
 });
 
 Route::middleware('admin')->group(function () {
@@ -68,6 +63,9 @@ Route::middleware('admin')->group(function () {
         ->name('benchmarkBcrypt');
     Route::get('/admin/benchmark-websockets', [BenchmarkingController::class, 'benchmarkWebSockets'])
         ->name('benchmarkWebSockets');
+
+    Route::get('/admin/docs', [AdminController::class, 'getDocumentation'])
+        ->name('docs');
 });
 
 Route::get('robot-demo', [RobotController::class, 'getUpdateForm'])

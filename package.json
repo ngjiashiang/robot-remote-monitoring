@@ -7,6 +7,7 @@
     "devDependencies": {
         "@inertiajs/react": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
+        "@tailwindcss/typography": "^0.5.10",
         "@vitejs/plugin-react": "^3.0.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.1.2",
@@ -25,7 +26,9 @@
         "@mui/material": "^5.14.0",
         "laravel-echo": "^1.15.3",
         "pusher-js": "^8.3.0",
+        "react-code-blocks": "^0.1.5",
         "react-icons": "^4.10.1",
+        "react-type-animation": "^3.2.0",
         "recharts": "^2.9.3"
     }
 }

@@ -107,4 +107,9 @@ class AdminController extends Controller
 
         return redirect()->route("getRobots");
     }
+
+    public function getDocumentation(): Response
+    {
+        return Inertia::render('Admin/Documentation');
+    }
 }

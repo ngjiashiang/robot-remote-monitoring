@@ -2,11 +2,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import PopupModal from '@/Components/PopupModal';
 import { useState } from "react";
-import { router, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react';
 
 export default function ManageUsers(props) {
     const { flash } = usePage().props
-
+    console.log(props)
     const [popupIsOpened, setPopupIsOpened] = useState(false);
 
     const openPopup = () => {
@@ -68,6 +68,16 @@ export default function ManageUsers(props) {
                             Add user
                         </button>
                     </div>
+                    {props.errors.email &&
+                        <div className="mt-6 text-center bg-red-100 w-full p-6 rounded-lg border-2 border-red-300">
+                            <div className="text-2xl font-bold">
+                                Error
+                            </div>
+                            <div>
+                                {props.errors.email}
+                            </div>
+                        </div>
+                    }
                     {(flash.message && (flash.message.event === "new_user_registered_successfully")) && 
                         <div className="mt-6 text-center bg-green-100 w-full p-6 rounded-lg border-2 border-green-300">
                             <div className="text-2xl font-bold">
