@@ -1,3 +1,32 @@
+## Pre-requisites:
+1. PostgreSQL [https://www.postgresql.org/download/](https://www.postgresql.org/download/)
+2. Soketi 1.6.0 [https://docs.soketi.app/getting-started/installation](https://docs.soketi.app/getting-started/installation)
+3. Node v18.17.1 [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+4. NPM 9.6.7 [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+5. PHP 8.0.12 [https://www.php.net/manual/en/install.php](https://www.php.net/manual/en/install.php)
+6. Composer 2.0.12 [https://getcomposer.org/download/](https://getcomposer.org/download/)
+
+## Running this locally:
+1. Clone this repository.
+2. Create a `.env` file in this directory.
+3. Copy the contents in `.env.example` to `.env` that you have just created.
+4. Fill in the environment variables accordingly in `.env`.
+5. Replace `Soketi` credentials and configurations in `soketi-config.json` if required.
+6. Run `composer install` in the terminal.
+7. Run `npm install` in the terminal.
+8. Run `npm run dev` in the terminal.
+9. Run `soketi start --config=soketi-config.json` in the terminal.
+10. Run `php artisan migrate` in the terminal.
+11. Run `php artisan db:seed` in the terminal.
+12. Run `php artisan serve` in the terminal.
+
+## Docker:
+If you wish to run this in a Dockerised environment, ensure you have Docker and PHP installed.
+1. Run `composer install` in the terminal.
+2. Run `./vendor/bin/sail up` in the terminal.
+
+------------------------ORIGINAL LARAVEL DOCUMENTATION----------------------------
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
