@@ -1,3 +1,7 @@
+## Introduction
+My final-year project at Sunway University.
+A web application to monitor robot metrics in a real-time manner.
+
 ## Pre-requisites:
 1. PostgreSQL [https://www.postgresql.org/download/](https://www.postgresql.org/download/)
 2. Soketi 1.6.0 [https://docs.soketi.app/getting-started/installation](https://docs.soketi.app/getting-started/installation)
